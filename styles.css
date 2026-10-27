@@ -139,6 +139,12 @@ button, input, textarea, select { font: inherit; }
 .meta-cell strong { display: block; font-size: .74rem; font-weight: 760; overflow-wrap: anywhere; }
 .followup-panel { border-top: 1px solid #edf1ef; padding-top: .95rem; margin-top: .95rem; }
 .followup-panel p { white-space: pre-wrap; font-size: .78rem; line-height: 1.6; color: #5e7477; margin: 0; }
+.followup-head { display: flex; align-items: center; justify-content: space-between; gap: .7rem; }
+.followup-head .detail-label { margin-bottom: .38rem; }
+.followup-text { white-space: pre-wrap; font-size: .78rem; line-height: 1.6; color: #5e7477; margin: 0; overflow-wrap: anywhere; }
+.followup-state { display: inline-flex; align-items: center; border-radius: 6px; padding: .25rem .45rem; color: #a86f29; background: #fff3df; font-size: .62rem; font-weight: 750; }
+.followup-state.is-done { color: #2e7c60; background: #e4f5ec; }
+.followup-done { color: #368264; }
 .followup-status { color: #8a9994; font-size: .66rem; margin-top: .5rem; }
 .detail-controls { display: grid; grid-template-columns: minmax(0,1fr) max-content; gap: .55rem; align-items: end; margin-top: 1rem; }
 .detail-controls label { display: block; font-size: .68rem; color: #6c7d7e; font-weight: 750; margin-bottom: .35rem; }
