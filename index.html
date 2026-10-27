@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#142b38">
+  <meta name="description" content="FeedbackPulse is a local feedback dashboard for reviewing customer ratings, comments, and follow-up opportunities.">
+  <title>FeedbackPulse — Customer Voice Dashboard</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <nav class="navbar container py-3" aria-label="Main navigation">
+      <a class="brand-lockup" href="https://developer-portfolio-wdf-5618s-projects.vercel.app/#projects" target="_blank" rel="noreferrer" aria-label="FeedbackPulse, back to portfolio">
+        <span class="brand-mark" aria-hidden="true">fp</span>
+        <span>Feedback<span class="brand-light">Pulse</span></span>
+      </a>
+      <div class="header-actions">
+        <span class="local-pill"><span aria-hidden="true"></span> Local demo</span>
+        <button class="btn btn-outline-light btn-sm" id="sample-reset-btn" type="button">Reset sample</button>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container page-shell">
+    <section class="hero-row" aria-labelledby="page-title">
+      <div>
+        <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> CUSTOMER VOICE</p>
+        <h1 id="page-title">Listen closer.<br><span>Improve with purpose.</span></h1>
+        <p class="hero-copy">Bring customer ratings and comments into one simple view. Spot what is working, see where people struggle, and keep follow-up actions visible.</p>
+      </div>
+      <div class="hero-actions">
+        <button class="btn btn-outline-secondary" id="export-csv-btn" type="button"><span aria-hidden="true">↓</span> Export CSV</button>
+        <button class="btn btn-primary btn-lg" id="open-response-btn" type="button"><span aria-hidden="true">＋</span> Add feedback</button>
+      </div>
+    </section>
+
+    <section class="metrics-grid" aria-label="Feedback summary">
+      <article class="metric-card metric-main">
+        <div class="metric-top"><span>Average rating</span><span class="metric-icon" aria-hidden="true">★</span></div>
+        <div class="metric-value-row"><p class="metric-number" id="metric-average">—</p><span class="metric-denominator">/ 5</span></div>
+        <p class="metric-foot" id="average-caption">No ratings yet</p>
+      </article>
+      <article class="metric-card">
+        <div class="metric-top"><span>Responses</span><span class="metric-icon icon-blue" aria-hidden="true">▤</span></div>
+        <p class="metric-number" id="metric-total">0</p>
+        <p class="metric-foot">Feedback entries in this browser</p>
+      </article>
+      <article class="metric-card">
+        <div class="metric-top"><span>Positive ratings</span><span class="metric-icon icon-green" aria-hidden="true">↗</span></div>
+        <p class="metric-number" id="metric-positive">0%</p>
+        <p class="metric-foot">Ratings of 4 or 5 stars</p>
+      </article>
+      <article class="metric-card">
+        <div class="metric-top"><span>Needs attention</span><span class="metric-icon icon-amber" aria-hidden="true">!</span></div>
+        <p class="metric-number" id="metric-attention">0</p>
+        <p class="metric-foot">Low ratings not marked for follow-up</p>
+      </article>
+    </section>
+
+    <section class="insights-grid" aria-label="Feedback insights">
+      <article class="panel distribution-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="section-kicker">RATING BREAKDOWN</p>
+            <h2>How customers rated us</h2>
+          </div>
+          <span class="subtle-label">1 to 5 stars</span>
+        </div>
+        <div id="rating-distribution" class="rating-distribution" aria-label="Rating distribution"></div>
+        <p class="chart-footnote">Positive = 4–5 stars · Neutral = 3 · Needs attention = 1–2</p>
+      </article>
+      <article class="panel category-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="section-kicker">WHAT IT IS ABOUT</p>
+            <h2>Feedback themes</h2>
+          </div>
+          <span class="subtle-label">By category</span>
+        </div>
+        <div id="category-breakdown" class="category-breakdown"></div>
+        <p class="chart-footnote">Themes are selected when feedback is entered; they are not AI-generated.</p>
+      </article>
+    </section>
+
+    <section class="workspace-grid" aria-label="Feedback responses">
+      <div class="responses-panel panel">
+        <div class="panel-heading">
+          <div>
+            <p class="section-kicker">RECENT FEEDBACK</p>
+            <h2>Customer responses</h2>
+          </div>
+          <span class="result-count" id="result-count">0 responses</span>
+        </div>
+        <div class="filter-bar">
+          <label class="search-box" for="feedback-search">
+            <span aria-hidden="true">⌕</span>
+            <input id="feedback-search" type="search" placeholder="Search feedback..." autocomplete="off">
+          </label>
+          <div class="filter-selects">
+            <label class="visually-hidden" for="rating-filter">Filter by rating</label>
+            <select class="form-select form-select-sm" id="rating-filter">
+              <option value="all">All ratings</option>
+              <option value="5">5 stars</option>
+              <option value="4">4 stars</option>
+              <option value="3">3 stars</option>
+              <option value="2">2 stars</option>
+              <option value="1">1 star</option>
+            </select>
+            <label class="visually-hidden" for="sentiment-filter">Filter by sentiment</label>
+            <select class="form-select form-select-sm" id="sentiment-filter">
+              <option value="all">All sentiment</option>
+              <option value="positive">Positive</option>
+              <option value="neutral">Neutral</option>
+              <option value="attention">Needs attention</option>
+            </select>
+            <label class="visually-hidden" for="category-filter">Filter by category</label>
+            <select class="form-select form-select-sm" id="category-filter">
+              <option value="all">All categories</option>
+              <option value="Product quality">Product quality</option>
+              <option value="Customer service">Customer service</option>
+              <option value="Delivery">Delivery</option>
+              <option value="Price and value">Price and value</option>
+              <option value="Website experience">Website experience</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="queue-toolbar">
+          <span id="filter-summary">Showing all responses</span>
+          <label class="sort-control" for="sort-order">Sort
+            <select id="sort-order" aria-label="Sort feedback">
+              <option value="newest">Newest</option>
+              <option value="oldest">Oldest</option>
+              <option value="lowest">Lowest rating</option>
+              <option value="highest">Highest rating</option>
+            </select>
+          </label>
+        </div>
+        <div class="response-list" id="response-list" aria-live="polite" aria-label="Filtered feedback"></div>
+        <div class="queue-footer">
+          <span><span class="tiny-status" aria-hidden="true"></span> <span id="storage-status" role="status" aria-live="polite">Saved in this browser</span></span>
+          <button class="link-button" id="clear-filters-btn" type="button">Clear filters</button>
+        </div>
+      </div>
+
+      <aside class="detail-column">
+        <section class="detail-panel panel" id="response-detail" aria-labelledby="detail-heading">
+          <div class="empty-detail">
+            <span class="empty-detail-icon" aria-hidden="true">✳</span>
+            <h2 id="detail-heading">Select a response</h2>
+            <p>Choose customer feedback to read the full comment, review its category, and record a follow-up action.</p>
+          </div>
+        </section>
+        <section class="side-note">
+          <span class="side-note-icon" aria-hidden="true">i</span>
+          <div>
+            <h3>Ratings are a signal, not the whole story</h3>
+            <p>Read comments in context. The summary uses simple rating thresholds and does not infer emotions or customer intent.</p>
+          </div>
+        </section>
+      </aside>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <span class="footer-brand">FeedbackPulse</span>
+        <p>Customer feedback review for practice projects.</p>
+      </div>
+      <div class="footer-disclaimer">
+        <span class="privacy-icon" aria-hidden="true">⌁</span>
+        <p><strong>Local demo only.</strong> Responses stay in this browser. No survey is sent, no customer is contacted, and no shared dashboard exists.</p>
+      </div>
+      <a href="https://github.com/wdf-5618/feedback-pulse" target="_blank" rel="noreferrer">Source code ↗</a>
+    </div>
+  </footer>
+
+  <dialog class="app-dialog" id="new-response-dialog" aria-labelledby="new-response-heading">
+    <form id="new-response-form" class="dialog-card">
+      <div class="dialog-heading">
+        <div>
+          <p class="section-kicker">NEW RESPONSE</p>
+          <h2 id="new-response-heading">Add customer feedback</h2>
+        </div>
+        <button class="icon-button" type="button" data-close-dialog="new-response-dialog" aria-label="Close dialog">×</button>
+      </div>
+      <p class="dialog-intro">Capture a rating and a little context. This form saves to the current browser only.</p>
+      <div class="row g-3">
+        <div class="col-12 col-md-6">
+          <label class="form-label" for="customer-name">Customer name <span class="required">*</span></label>
+          <input class="form-control" id="customer-name" name="customerName" maxlength="100" placeholder="Name or anonymous" required>
+        </div>
+        <div class="col-12 col-md-6">
+          <label class="form-label" for="feedback-date">Response date <span class="required">*</span></label>
+          <input class="form-control" id="feedback-date" name="date" type="date" required>
+        </div>
+        <div class="col-12">
+          <fieldset class="rating-fieldset">
+            <legend class="form-label">Overall rating <span class="required">*</span></legend>
+            <div class="rating-options" role="radiogroup" aria-label="Overall rating">
+              {# stars are provided as individual radio inputs below #}
+            </div>
+            <div class="rating-choice-grid">
+              <label class="rating-choice"><input type="radio" name="rating" value="1" required><span aria-hidden="true">★</span><strong>1</strong><small>Poor</small></label>
+              <label class="rating-choice"><input type="radio" name="rating" value="2" required><span aria-hidden="true">★</span><strong>2</strong><small>Fair</small></label>
+              <label class="rating-choice"><input type="radio" name="rating" value="3" required><span aria-hidden="true">★</span><strong>3</strong><small>Okay</small></label>
+              <label class="rating-choice"><input type="radio" name="rating" value="4" required><span aria-hidden="true">★</span><strong>4</strong><small>Good</small></label>
+              <label class="rating-choice"><input type="radio" name="rating" value="5" required><span aria-hidden="true">★</span><strong>5</strong><small>Great</small></label>
+            </div>
+          </fieldset>
+        </div>
+        <div class="col-12 col-md-6">
+          <label class="form-label" for="feedback-category">Category</label>
+          <select class="form-select" id="feedback-category" name="category">
+            <option>Product quality</option>
+            <option>Customer service</option>
+            <option>Delivery</option>
+            <option>Price and value</option>
+            <option>Website experience</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="col-12 col-md-6">
+          <label class="form-label" for="feedback-channel">Where did it come from?</label>
+          <select class="form-select" id="feedback-channel" name="channel">
+            <option>Website</option>
+            <option>Email survey</option>
+            <option>In person</option>
+            <option>Phone</option>
+            <option>Social media</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="col-12">
+          <label class="form-label" for="feedback-comment">Customer comment</label>
+          <textarea class="form-control" id="feedback-comment" name="comment" rows="4" maxlength="2000" placeholder="What worked well, what did not, or what could be improved?"></textarea>
+        </div>
+        <div class="col-12">
+          <label class="form-label" for="feedback-followup">Follow-up action</label>
+          <input class="form-control" id="feedback-followup" name="followup" maxlength="500" placeholder="Optional: a next step for the team">
+        </div>
+      </div>
+      <div class="dialog-actions">
+        <p><span class="required">*</span> Required fields</p>
+        <div class="d-flex gap-2">
+          <button class="btn btn-outline-secondary" type="button" data-close-dialog="new-response-dialog">Cancel</button>
+          <button class="btn btn-primary" type="submit">Save response</button>
+        </div>
+      </div>
+      <p class="dialog-message" id="new-response-message" role="status" aria-live="polite"></p>
+    </form>
+  </dialog>
+
+  <dialog class="app-dialog app-dialog-small" id="reset-dialog" aria-labelledby="reset-heading">
+    <form method="dialog" class="dialog-card">
+      <h2 id="reset-heading">Reset feedback data?</h2>
+      <p>This replaces all responses in this browser with the original fictional sample data. Your locally added responses and follow-up changes will be removed.</p>
+      <div class="d-flex justify-content-end gap-2">
+        <button class="btn btn-outline-secondary" value="cancel">Keep current data</button>
+        <button class="btn btn-danger" id="confirm-reset-btn" value="confirm">Reset sample</button>
+      </div>
+    </form>
+  </dialog>
+</body>
+</html>
