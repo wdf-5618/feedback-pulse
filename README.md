@@ -62,15 +62,15 @@ Do not enter confidential customer information in a public demo. A production se
 
 ## Manual test checklist
 
-- [ ] Review the initial rating average and rating/category distributions.
-- [ ] Add a response with each rating range and check the positive/neutral/attention labels.
-- [ ] Confirm an empty form is blocked and a future response date is rejected.
-- [ ] Search by customer name, comment, and response ID.
-- [ ] Combine rating, sentiment, and category filters.
-- [ ] Mark a low-rated response as followed up and confirm the attention count changes.
-- [ ] Refresh the page and confirm added responses and follow-up states persist.
-- [ ] Export CSV and review the headers, ratings, comments, and follow-up status.
-- [ ] Reset the demo and confirm the original fictional responses return.
-- [ ] Check the layout at a narrow mobile viewport.
+- [x] Review the initial average, positive rate, attention count, and rating distribution.
+- [x] Add a response and confirm the ratings and summary calculations update.
+- [x] Confirm an empty form is blocked and a future response date is rejected.
+- [x] Search feedback and combine rating, sentiment, and category filters.
+- [x] Mark a low-rated response as followed up and confirm the attention count changes.
+- [x] Refresh the page and confirm added responses and follow-up states persist.
+- [x] Export CSV and confirm headers, comments, and follow-up status; formula-like values are neutralized.
+- [x] Confirm customer text that looks like HTML is displayed as text, not executed.
+- [x] Reset the demo and confirm the original fictional responses return.
+- [x] Check the layout at a narrow mobile viewport and confirm no horizontal overflow.
 
-Source syntax and DOM wiring checks will be completed before the first deployment. Live browser testing will be recorded separately from source review.
+Headless browser checks passed for the listed workflows. Source syntax and DOM wiring checks also passed. This is a workflow smoke test, not an exhaustive test across every device or browser.
