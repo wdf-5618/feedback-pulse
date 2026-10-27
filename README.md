@@ -2,7 +2,7 @@
 
 FeedbackPulse is a small feedback dashboard for reviewing customer ratings and comments. It summarizes responses, groups ratings into clear thresholds, and keeps follow-up actions visible.
 
-**Live demo:** [Open FeedbackPulse](https://feedback-pulse-wdf-5618s-projects.vercel.app)  
+**Live demo:** [Open FeedbackPulse](https://feedback-pulse-blond.vercel.app)  
 **Source code:** https://github.com/wdf-5618/feedback-pulse
 
 ## Features
